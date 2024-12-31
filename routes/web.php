@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\UploadController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\UserMainController;
+use App\Http\Controllers\UserMenuController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,7 +68,9 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/', [UserMainController::class, 'index']);  
 Route::post('/service/load-product', [MainController::class, 'loadProduct']);
-//Route::get('/', [MainController::class, 'index']);
 
+Route::get('danh-muc/{id}-{slug}.html', [UserMenuController::class, 'index']);
+Route::get('san-pham/{id}-{slug}.html', [ProductController::class, 'index']);
+//Route::get('/danh-muc/{id}-{slug}.html', [App\Http\Controllers\ProductController::class, 'index']);
 
 //Route::get('/admin/home', [MainController::class, 'index'] )->name('admin')->middleware('auth');

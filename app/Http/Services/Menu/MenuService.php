@@ -67,28 +67,25 @@ class MenuService
         return false;
     }
 
-    public function show() {
+    public function show()
+    {
         return Menu::select('name', 'id')->where('parent_id', 0)->orderbyDesc('id')->get();
     }
 
+    public function getID($id)
+    {
+        return Menu::where('id', $id)->where('active', 1)->firstOrFail();
+    }
 
-
-    // public function update($menu, $request)
-    // {
-    //     try {
-    //         $menu->update([
-    //             'title' => (string)$request->input('name'),
-    //             'parent_id' => (int)$request->input('parent_id'),
-    //             'description' => (string)$request->input('description'),
-    //             'content' => (string)$request->input('content'),
-    //             'active' => (bool)$request->input('active'),
-    //             'slug' => Str::slug($request->input('name'), '-'),
-    //         ]);
-
-    //         return true;
-    //     } catch (Exception $e) {
-    //         \Log::error($e->getMessage());
-    //         return false;
-    //     }
-    // }
+    public function getProduct($menu, $request)
+    {
+        $query = $menu->products()->select('id', 'name', 'price', 'price_sale', 'thumb')
+            ->where('active', 1);
+        if ($request->input('price')) {
+            $query->orderBy('price', $request->input('price'));
+        }
+        return $query
+            ->orderByDesc('id')
+            ->paginate(16)->withQueryString();
+    }
 }
